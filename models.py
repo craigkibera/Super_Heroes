@@ -22,6 +22,12 @@ class Power(db.Model):
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(20), nullable=False)
     hero_powers = db.relationship('HeroPower',back_populates='power',cascade='all, delete-orphan')
+
+    @validates('description')
+    def validates_description(self, key, value):
+        if len(value) < 20:
+            raise ValueError("Description must be at least 20 characters long")
+        return value
     
     def __repr__(self):
         return f'<Power {self.name}>'
